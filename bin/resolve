@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var resolve = require('..');
+var result = resolve.sync(process.argv[2], {
+    basedir: process.cwd()
+});
+
+console.log(result);

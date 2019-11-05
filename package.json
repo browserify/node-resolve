@@ -39,5 +39,8 @@
   },
   "dependencies": {
     "path-parse": "^1.0.6"
+  },
+  "bin": {
+    "resolve": "./bin/resolve"
   }
 }

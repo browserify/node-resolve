@@ -16,8 +16,8 @@ implements the [node `require.resolve()` algorithm](https://nodejs.org/api/modul
 asynchronously resolve:
 
 ```js
-var resolve = require('resolve');
-resolve('tap', { basedir: __dirname }, function (err, res) {
+const resolve = require('resolve');
+resolve('tap', { basedir: __dirname }, (err, res) => {
     if (err) console.error(err);
     else console.log(res);
 });
@@ -31,8 +31,8 @@ $ node example/async.js
 synchronously resolve:
 
 ```js
-var resolve = require('resolve');
-var res = resolve.sync('tap', { basedir: __dirname });
+const resolve = require('resolve');
+const res = resolve.sync('tap', { basedir: __dirname });
 console.log(res);
 ```
 
@@ -44,7 +44,7 @@ $ node example/sync.js
 # methods
 
 ```js
-var resolve = require('resolve');
+const resolve = require('resolve');
 ```
 
 For both the synchronous and asynchronous methods, errors may have any of the following `err.code` values:
@@ -119,8 +119,8 @@ default `opts` values:
     extensions: ['.js'],
     includeCoreModules: true,
     readFile: fs.readFile,
-    isFile: function isFile(file, cb) {
-        fs.stat(file, function (err, stat) {
+    isFile(file, cb) {
+        fs.stat(file, (err, stat) => {
             if (!err) {
                 return cb(null, stat.isFile() || stat.isFIFO());
             }
@@ -128,8 +128,8 @@ default `opts` values:
             return cb(err);
         });
     },
-    isDirectory: function isDirectory(dir, cb) {
-        fs.stat(dir, function (err, stat) {
+    isDirectory(dir, cb) {
+        fs.stat(dir, (err, stat) => {
             if (!err) {
                 return cb(null, stat.isDirectory());
             }
@@ -226,18 +226,20 @@ default `opts` values:
     extensions: ['.js'],
     includeCoreModules: true,
     readFileSync: fs.readFileSync,
-    isFile: function isFile(file) {
+    isFile(file) {
+        let stat;
         try {
-            var stat = fs.statSync(file);
+            stat = fs.statSync(file);
         } catch (e) {
             if (e && (e.code === 'ENOENT' || e.code === 'ENOTDIR')) return false;
             throw e;
         }
         return stat.isFile() || stat.isFIFO();
     },
-    isDirectory: function isDirectory(dir) {
+    isDirectory(dir) {
+        let stat;
         try {
-            var stat = fs.statSync(dir);
+            stat = fs.statSync(dir);
         } catch (e) {
             if (e && (e.code === 'ENOENT' || e.code === 'ENOTDIR')) return false;
             throw e;
